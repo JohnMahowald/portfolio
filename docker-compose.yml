@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  frontend_server:
+    image: frontend_server:latest
+    deploy:
+      replicas: 1
+    ports:
+      - "4040:4040"
+    networks:
+      - webnet
+    depends_on:
+      - frontend
+    volumes:
+      - type: volume
+        source: assets
+        target: /app/assets
+  frontend:
+    image: frontend:latest
+    ports:
+      - "4020:4020"
+    volumes:
+      - type: bind
+        source: /Users/johnmahowald/src/portfolio/frontend/src/
+        target: /app/src
+      - type: volume
+        source: assets
+        target: /app/assets
+    deploy:
+      replicas: 1
+    networks:
+      - webnet
+networks:
+  webnet:
+volumes:
+  assets:
